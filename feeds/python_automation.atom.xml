@@ -1,0 +1,1017 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Seyi Obaweya - Python_Automation</title><link href="https://www.seyiobaweya.tech/" rel="alternate"></link><link href="https://www.seyiobaweya.tech/feeds/python_automation.atom.xml" rel="self"></link><id>https://www.seyiobaweya.tech/</id><updated>2020-02-26T10:20:00+00:00</updated><subtitle>Tech Lover</subtitle><entry><title>Deploying your Python Script to Lambda - Part 2</title><link href="https://www.seyiobaweya.tech/articles/2020-02-26/python-deploy-aws-lambda/" rel="alternate"></link><published>2020-02-26T10:20:00+00:00</published><updated>2020-02-26T10:20:00+00:00</updated><author><name>Seyi Obaweya</name></author><id>tag:www.seyiobaweya.tech,2020-02-26:/articles/2020-02-26/python-deploy-aws-lambda/</id><summary type="html">&lt;p&gt;After successfully creating our script, we will be using the AWS Lambda service to deploy the script. This article walks you through the process of setting up the lambda function.&lt;/p&gt;</summary><content type="html">&lt;p&gt;This is the second article in the 2 part series "Creating a Python Love Poem". This Article covers deploying your Python script to AWS Lambda Service.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href="https://www.seyiobaweya.tech/articles/2020-02-25/python-love-poem/"&gt;Setting Up Pelican Site Generator&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Deploying your Python Script to Lambda&lt;/strong&gt; &amp;lt;-- this article&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/pythonawslambda.png" alt="AWS Lambda Functions and Python"&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;
+
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;In &lt;a href="https://www.seyiobaweya.tech/articles/2020-02-25/python-love-poem/"&gt;&lt;strong&gt;Part One&lt;/strong&gt;&lt;/a&gt;, our code has been tested and is ready for deployment. With the advent of serverless computing, it would be a waste of resources to run a task as small as this. Here is Where AWS Lambda comes in.&lt;br&gt;
+AWS Lambda Service is a serverless cloud computing service that runs small pieces of code/ functions without the need for a server making you only pay for the compute time you consume. Also, Aws lambda service gives a million requests for free in a month. making it perfect as we would be making less than 100 requests for this project  &lt;/p&gt;
+&lt;h3&gt;Creating your Lambda Function&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;You'll need to have an AWS account to run this project.&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Sign in to your AWS console.  &lt;/li&gt;
+&lt;li&gt;Under Services, Select Lambda service under the Compute Category   &lt;/li&gt;
+&lt;li&gt;Click on &lt;code&gt;Create Function&lt;/code&gt;  &lt;/li&gt;
+&lt;li&gt;Enter the Name of the New Function  &lt;/li&gt;
+&lt;li&gt;Specify the Runtime Environment of the Function  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The Function runtimes are the languages and versions supported by AWS and are used for the execution of the function. Your function runtime version should be similar to your development environment. Our script is written in python and we can check the closest version by running the following  command on our development terminal&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python --version
+
+Python &lt;span class="m"&gt;3&lt;/span&gt;.6.2
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Select the closest Runtime to your Python version to your development environment&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/create_function.JPG" alt="Creating a Function"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 1. Creating a Function.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;You are now redirected to a Designer page which shows you an overview of your function. The Designer Page is used for function configuration such as adding Event Triggers, Layers and other Actions related to other AWS services. Below the Designer, you have the code Editor which displays a default function structure, the code editor allows you to make changes to your function on the AWS console.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import json
+
+def lambda_handler&lt;span class="o"&gt;(&lt;/span&gt;event, context&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="c1"&gt;# TODO implement&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;200&lt;/span&gt;,
+        &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: json.dumps&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello from Lambda!&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The Lambda function takes in a function handler &lt;code&gt;lambda_handler(event, context)&lt;/code&gt; which has 2 arguments &lt;code&gt;event&lt;/code&gt; and &lt;code&gt;context&lt;/code&gt;. The event parameter is used to pass data into your function, while the context provides the runtime information to the function. The Handler acts as an entry point for your function, which is similar to the &lt;code&gt;if __name__ == "__main__"&lt;/code&gt; line in python used to ensure a block of code executes when a script is run on the command-line. The Handler also returns JSON-formatted data.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step20.JPG" alt="Function Homepage"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 2. Designer Page.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;h3&gt;Installing Dependencies&lt;/h3&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;AWS provides a list of available Python libraries that can be imported into your project, however you start to encounter issues when you need libraries that are not available by default such as the Twilio and BeautifulSoup Libraries used in our script. To make deployments easier AWS lambda service allows users to install libraries locally and upload as Lambda Layers.  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Lambda Layers&lt;/strong&gt;  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;A Lambda Layer is a ZIP archive that contains libraries. Layers are very useful if you have various Lambda functions using the same dependencies since the dependencies will be imported into the Lambda function at runtime. The main benefit of this is that you utilize your dependencies more efficiently, resulting in smaller deployment bundles that make deployments faster.  &lt;/p&gt;
+&lt;p&gt;To create a Layer, The Python dependencies will be installed to a directory, which will then be zipped and uploaded as a Lambda layer. 
+Note, when a Layer ZIP archive is loaded into AWS Lambda, it is unzipped to the /opt folder. The Libraries should be placed inside a &lt;code&gt;python&lt;/code&gt; directory to enable the Python lambda function to import the library.&lt;/p&gt;
+&lt;p&gt;Create a directory named python to hold your dependencies  &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Install all dependencies to the directory with the &lt;code&gt;-t&lt;/code&gt; flag&lt;br&gt;
+&lt;code&gt;pip install &amp;lt;dependency-name&amp;gt; -t python&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;pip install Twilio requests -t python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Compress the python directory into a zip file&lt;br&gt;
+N.B. Install zip utility if not present on your system. &lt;code&gt;apt-get install zip&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;zip -r twiliodeps.zip python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;to upload, you can use the AWS CLI or the AWS console&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws lambda publish-layer-version --layer-name twiliodep --zip-file fileb://twiliodeps.zip
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The Created Zip file can also be uploaded on the AWS Console  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;On your Lambda Service Console, Click on Layers  &lt;/li&gt;
+&lt;li&gt;Give your Layer a Unique Name and a Description (optional)  &lt;/li&gt;
+&lt;li&gt;Select Upload a .zip file  &lt;/li&gt;
+&lt;li&gt;Click Upload a File and Select your Zipped File  &lt;/li&gt;
+&lt;li&gt;Choose Compatible Runtime (similar Runtime to your development environment)  &lt;/li&gt;
+&lt;li&gt;Create  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/layers1.JPG" alt="Creating a Layer"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 3. Creating a Layer.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;After creating and Uploading your Layers, the dependencies can be imported in the script&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;On the Designer, Click on Layers,&lt;/li&gt;
+&lt;li&gt;A Layers section will appear below the designer. &lt;/li&gt;
+&lt;li&gt;Click &lt;code&gt;Add a Layer&lt;/code&gt; which takes you to a page where you can select a layer to add&lt;/li&gt;
+&lt;li&gt;Select the Layer you earlier created and Add.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/add_layer2.JPG" alt="Adding Layers to Lambda Function"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 4. Adding Layers to Lambda Function.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;On adding the Layer, the Designer shows the number of layers attached to your function&lt;/p&gt;
+&lt;p&gt;we can then test if layers are imported by importing our dependencies into the function&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import json
+from twilio.rest import Client
+from bs4 import BeautifulSoup as bs
+
+def lambda_handler&lt;span class="o"&gt;(&lt;/span&gt;event, context&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="c1"&gt;# TODO implement&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;200&lt;/span&gt;,
+        &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: json.dumps&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello from Lambda!&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Save the function to add the dependencies and click on the &lt;code&gt;test&lt;/code&gt; button above the designer.
+On your first run, you are prompted to create a default test event. Accept the Default Settings as we do not have any event being passed into our function.
+Click the Test Button again&lt;/p&gt;
+&lt;p&gt;if the layer was properly uploaded, the console returns a succeeded Status&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;figure&gt;
+  &lt;img src="/images/success.JPG" alt="Test Success" align="center"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 5. Test Success.&lt;/figcaption&gt;
+&lt;/figure&gt; &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;h3&gt;Adding our code to the Lambda Function&lt;/h3&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The functions are added above the main lambda handler, while the body for running our code will be included in the handler which is called at runtime. We also wrapped our code in a try/except block to catch errors raised.&lt;/p&gt;
+&lt;p&gt;Our new code is&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import json, sys, requests
+import urllib.parse, boto3, random
+from bs4 import BeautifulSoup as bs
+
+def getMessage&lt;span class="o"&gt;()&lt;/span&gt;:
+    ...
+
+
+def _get_request&lt;span class="o"&gt;(&lt;/span&gt;url, payload&lt;span class="o"&gt;)&lt;/span&gt;:
+    ...
+
+&lt;span class="nv"&gt;transUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;randomLangUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2/languages&amp;#39;&lt;/span&gt;
+
+def lambda_handler&lt;span class="o"&gt;(&lt;/span&gt;event, context&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="c1"&gt;# TODO implement&lt;/span&gt;
+    try:
+        &lt;span class="nv"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Client&lt;span class="o"&gt;(&lt;/span&gt;twiliosid, twiliotoken&lt;span class="o"&gt;)&lt;/span&gt;
+
+        ...
+
+        &lt;span class="nv"&gt;transResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;transUrl, transPayload&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; transResponse.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translations&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translatedText&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; translate&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;, dest_language, gtranslateApiKey&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;randomQuote&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; getMessage&lt;span class="o"&gt;()&lt;/span&gt;
+        &lt;span class="nv"&gt;fulltextmsg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; randomQuote + &lt;span class="s2"&gt;&amp;quot; \n P.S. &amp;quot;&lt;/span&gt; + msg
+
+        &lt;span class="nv"&gt;loved_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;seyi&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;+26878514450&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; key, value in loved_ones.items&lt;span class="o"&gt;()&lt;/span&gt;:
+            &lt;span class="nv"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; client.messages.create&lt;span class="o"&gt;(&lt;/span&gt;
+                                        &lt;span class="nv"&gt;body&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Dear &amp;quot;&lt;/span&gt; + key + &lt;span class="s2"&gt;&amp;quot;,\n&amp;quot;&lt;/span&gt; + fulltextmsg,
+                                        &lt;span class="nv"&gt;from_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:+14155238886&amp;#39;&lt;/span&gt;,
+                                        &lt;span class="nv"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:&amp;#39;&lt;/span&gt; + value
+                                    &lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;200&lt;/span&gt;,
+            &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: message.sid
+        &lt;span class="o"&gt;}&lt;/span&gt;
+    except:
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;400&lt;/span&gt;,
+            &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Error, Bad Request&amp;#39;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Managing Secrets on Lambda&lt;/h3&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;In the previous part, we saw the importance of managing application secrets and were able to secure our secrets by using the .dotenv package and OS environment variables. We would be using the AWS Parameter Store to securely manage our API keys &lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;AWS Systems Manager Parameter Store provides secure, hierarchical storage for configuration data management and secrets management. You can store data such as passwords, database strings, and license codes as parameter values.  &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;We would be storing our API keys by encrypting them in the parameter store and only importing it to our script during runtime.  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Sign in to your AWS Console and select an appropriate region.  &lt;/li&gt;
+&lt;li&gt;Under Services, click on Systems Manager.  &lt;/li&gt;
+&lt;li&gt;on the left menu pane, scroll down to the Parameter Store  &lt;/li&gt;
+&lt;li&gt;Click on Create Parameter in the new window  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;There are 3 types of Parameters&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;Strings&lt;/li&gt;
+&lt;li&gt;Secure String which would be used to encrypt our API keys using a KMS key that can be decrypted only by a permitted user  &lt;/li&gt;
+&lt;li&gt;String List  &lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;We then proceed to create parameters for our google and Twilio API keys  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Enter the Name of the keys you want to store. Example GAPIkey&lt;/li&gt;
+&lt;li&gt;Enter the Description(Optional)  &lt;/li&gt;
+&lt;li&gt;Select Secure String as Parameter Type. Under KMS key source select My current account if you want to use the KMS key present in your account.  &lt;/li&gt;
+&lt;li&gt;From the drop-down list select the KMS Key ID you want to use to encrypt the values.  &lt;/li&gt;
+&lt;li&gt;Enter the Value which you need to store and click on the Create Parameter.  &lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After creating your keys, your parameter store should contain all 3 keys&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step9.PNG" alt="Parameter Store"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 6. Parameter Store.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;You can also go into a key and view the decrypted value if signed in as a permitted user&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step10.PNG" alt="Secured Key View"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 7. Secured Key View.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;A Faster approach to creating our parameters is by using the AWS CLI.&lt;/p&gt;
+&lt;p&gt;Make sure your AWS CLI is configured to use your credentials&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws configure
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Creating SecureString Parameter&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws ssm put-parameter --name googleTranslateKey --type secureString --value &amp;lt;your-key&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Creating String Parameter&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws ssm put-parameter --name twiliosid --type string --value &amp;lt;your-key&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Retrieving the Keys&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws ssm get-parameter --name googleTranslateKey
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;this returns a python dictionary which contains the string if the value is a plaintext string, while it returns an encrypted key for secureString&lt;/p&gt;
+&lt;p&gt;to decrypt, pass the with-decrypt flag&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;aws ssm get-parameter --name googleTranslateKey  --with-decrypt
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Incorporating into our code
+The keys will be imported into our function using the AWS SDK boto3, which allows us to make use of other AWS services such as s3, parameter store and Amazon EC2  in our function.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import boto3
+
+&lt;span class="nv"&gt;ssm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; boto3.client&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ssm&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+def _getParameter&lt;span class="o"&gt;(&lt;/span&gt;someString&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="nv"&gt;paramObject&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; ssm.get_parameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;someString, &lt;span class="nv"&gt;WithDecryption&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;True&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; paramObject&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Parameter&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Value&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We import the boto3 library, then create a client for the ssm service.
+The next line creates the &lt;code&gt;_getParameter&lt;/code&gt; function which takes in a Parameter name, and returns the decrypted value using the ssm client that was created.&lt;/p&gt;
+&lt;p&gt;Retrieving the Keys with the _getParameter function in the Lambda handler&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;gtranslateApiKey&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;GtranslateApiKey&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;twiliotoken&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;valapptokentwilio&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;twiliosid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsappsidtwilio&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Adding Roles to your Function&lt;/h3&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;Save and Run your code after including the Secured keys, We however, get an &lt;code&gt;AccessDeniedException&lt;/code&gt; when the script tries to access the keys we created&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/permission_error.JPG" alt="Console Error"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 8. Console Error.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The error occurs because we initially chose the default execution role which only provides access to the Lambda service and we now have included the System Manager and KMS service into our function, and the default Role does not have permission to run those services. we would work around this by creating a new IAM role which gives our function access to the KMS service to decrypt our secret API keys&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;IAM Roles&lt;/strong&gt;  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;"IAM roles are a secure way to grant permissions to entities that you trust"&lt;/strong&gt;   &lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;such as an AWS service that needs to act on resources in your account to provide its features. &lt;/p&gt;
+&lt;h4&gt;Creating Roles in AWS&lt;/h4&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Navigate to the IAM Service&lt;/li&gt;
+&lt;li&gt;Click Create Roles&lt;/li&gt;
+&lt;li&gt;Select AWS Service as the type of trusted entity&lt;/li&gt;
+&lt;li&gt;Select Lambda Use Case and Click on Permissions Button&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step13.PNG" alt="Creating a Role"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 9. Creating a Role.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;You will be prompted to create a policy that will be attached to the role being created. Policies are Objects that define permissions for specific AWS resources and services.&lt;br&gt;
+We would be creating Policies and attaching the Listed Permissions &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;dl&gt;
+&lt;dd&gt;Service: Lambda  &lt;/dd&gt;
+&lt;dd&gt;Action: Read  &lt;/dd&gt;
+&lt;dd&gt;Resources: All  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;This will grant the policy user access run the Lambda function, Also add the KMS service with Decrypt access for decrypting our keys and System Manager service with the ReadParameters Access for reading keys from the Parameter Store&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;dl&gt;
+&lt;dd&gt;Service: KMS  &lt;/dd&gt;
+&lt;dd&gt;Action: Decrypt  &lt;/dd&gt;
+&lt;dd&gt;Resources: All  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;dl&gt;
+&lt;dd&gt;Service: System Manager  &lt;/dd&gt;
+&lt;dd&gt;Actions: Read (getParameter and getParameters)  &lt;/dd&gt;
+&lt;/dl&gt;
+&lt;p&gt;Review Policy and Give a Policy Name&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/policy-creation.JPG" alt="Creating a Policy"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 10. Creating a Policy.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;After Creating your Policy, Navigate to your Role tab to Attach the Policy that was created.&lt;br&gt;
+Also, Give the Role a name and Save Role.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/roles-saved.JPG" alt="Role Summary"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 11. Role Summary.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Adding the New Role to the Lambda Function&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;Head back to your Function Designer Page, under the Execution Role Section, Select &lt;code&gt;Choose Existing Role&lt;/code&gt;. Several Roles are Populated into the existing Roles Field, Search and Select the Role that you recently created for the Lambda Function.  &lt;/p&gt;
+&lt;p&gt;Our final code.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import json, sys, requests
+import urllib.parse, boto3, random
+from twilio.rest import Client
+from bs4 import BeautifulSoup as bs
+
+&lt;span class="nv"&gt;ssm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; boto3.client&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;ssm&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+
+def getMessage&lt;span class="o"&gt;()&lt;/span&gt;:
+    &lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://www.serenataflowers.com/pollennation/love-messages/&amp;#39;&lt;/span&gt;
+    &lt;span class="nv"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        res.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; bs&lt;span class="o"&gt;(&lt;/span&gt;res.text, &lt;span class="nv"&gt;features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;listOfMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; soup.select&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.simple-list li&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;textMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;item.text &lt;span class="k"&gt;for&lt;/span&gt; item in listOfMessages&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="nv"&gt;randomquote&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;textMessages&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; randomquote
+
+def _get_request&lt;span class="o"&gt;(&lt;/span&gt;url, payload&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="nv"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url, &lt;span class="nv"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;payload&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        r.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        print&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Error: the Request failed.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; json.loads&lt;span class="o"&gt;(&lt;/span&gt;r.content.decode&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf-8-sig&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; response
+
+def _getParameter&lt;span class="o"&gt;(&lt;/span&gt;someString&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="nv"&gt;paramObject&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; ssm.get_parameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Name&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;someString, &lt;span class="nv"&gt;WithDecryption&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;True&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; paramObject&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Parameter&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Value&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+
+&lt;span class="nv"&gt;transUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;randomLangUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2/languages&amp;#39;&lt;/span&gt;
+
+
+def lambda_handler&lt;span class="o"&gt;(&lt;/span&gt;event, context&lt;span class="o"&gt;)&lt;/span&gt;:
+    try:
+        &lt;span class="nv"&gt;gtranslateApiKey&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;GtranslateApiKey&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;twiliotoken&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;valapptokentwilio&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;twiliosid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _getParameter&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsappsidtwilio&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="nv"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Client&lt;span class="o"&gt;(&lt;/span&gt;twiliosid, twiliotoken&lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="nv"&gt;randomLangPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey&lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nv"&gt;destResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;randomLangUrl, randomLangPayload&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;dest_language&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;destResponse&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;languages&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;])&lt;/span&gt;
+
+        &lt;span class="nv"&gt;transPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;source&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;,
+            &lt;span class="s1"&gt;&amp;#39;target&amp;#39;&lt;/span&gt;: dest_language,
+            &lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey,
+            &lt;span class="s1"&gt;&amp;#39;q&amp;#39;&lt;/span&gt;: urllib.parse.quote&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="nv"&gt;transResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;transUrl, transPayload&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; transResponse.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translations&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translatedText&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; translate&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;, dest_language, gtranslateApiKey&lt;span class="o"&gt;)&lt;/span&gt;
+        &lt;span class="nv"&gt;randomQuote&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; getMessage&lt;span class="o"&gt;()&lt;/span&gt;
+        &lt;span class="nv"&gt;fulltextmsg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; randomQuote + &lt;span class="s2"&gt;&amp;quot; \n P.S. &amp;quot;&lt;/span&gt; + msg
+
+        &lt;span class="nv"&gt;loved_ones&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;seyi&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;+26878514450&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;}&lt;/span&gt;
+
+        &lt;span class="k"&gt;for&lt;/span&gt; key, value in loved_ones.items&lt;span class="o"&gt;()&lt;/span&gt;:
+            &lt;span class="nv"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; client.messages.create&lt;span class="o"&gt;(&lt;/span&gt;
+                                        &lt;span class="nv"&gt;body&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Dear &amp;quot;&lt;/span&gt; + key + &lt;span class="s2"&gt;&amp;quot;,\n&amp;quot;&lt;/span&gt; + fulltextmsg,
+                                        &lt;span class="nv"&gt;from_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:+14155238886&amp;#39;&lt;/span&gt;,
+                                        &lt;span class="nv"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:&amp;#39;&lt;/span&gt; + value
+                                    &lt;span class="o"&gt;)&lt;/span&gt;
+
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+            &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;200&lt;/span&gt;,
+            &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: message.sid
+        &lt;span class="o"&gt;}&lt;/span&gt;
+    except:
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+          &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;404&lt;/span&gt;,
+          &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;Error, Bad Request&amp;#39;&lt;/span&gt;
+        &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Save your Function and Test. You should get a success status and a message is sent to the registered Number.  &lt;/p&gt;
+&lt;h3&gt;Scheduling the Function Execution&lt;/h3&gt;
+&lt;p&gt;The final part of our project is getting the function to run at scheduled time intervals (similar to using cron to run on our local development environment script). This is done through Lambda Triggers which invoke your function. &lt;br&gt;
+We would be using a CloudWatch event Trigger to schedule Our script to run at the specified time.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;On your Designer page, Click on &lt;code&gt;Add a Trigger&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Select Cloud watch events Trigger&lt;/li&gt;
+&lt;li&gt;On the Rule Input, Select &lt;code&gt;Create a New Rule&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Enter a Rule Name&lt;/li&gt;
+&lt;li&gt;Select the scheduled expression Rule Type&lt;/li&gt;
+&lt;li&gt;Schedule expression - rate(2 hours)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You can create rules that self-trigger on an automated schedule in CloudWatch Events using cron or rate expressions&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Rate Expressions: Syntax rate(int time)&lt;/li&gt;
+&lt;li&gt;Cron Expressions: same as using Unix Cron Utility&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step17.PNG" alt="Cloud Watch Event" style="margin: auto;"  class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 12. Cloud Watch Event.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The Function should now Run at the scheduled time.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Wrapping Up&lt;/strong&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;i hope this articles helps you understand better the steps to deploying a python script on the AWS Lambda service and integrating with other AWS services. Feel free to reach out if you need any help getting your script to work.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;Ciao  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The Source code for the article can be found &lt;a href="https://github.com/seyio91/twiliowhatsappscript" target="_blank"&gt;here&lt;/a&gt;&lt;/p&gt;</content><category term="Python_Automation"></category><category term="python"></category><category term="aws"></category><category term="webscraping"></category><category term="lambda"></category></entry><entry><title>Creating a Python Love Poem</title><link href="https://www.seyiobaweya.tech/articles/2020-02-25/python-love-poem/" rel="alternate"></link><published>2020-02-25T10:20:00+00:00</published><updated>2020-02-25T10:20:00+00:00</updated><author><name>Seyi Obaweya</name></author><id>tag:www.seyiobaweya.tech,2020-02-25:/articles/2020-02-25/python-love-poem/</id><summary type="html">&lt;p&gt;We'll be writing a python script that sends messages as part of a poem to our loved ones every hour, reminding them how much they are loved. This will be done by scraping a website using the beautiful soup library, the Twilio API to send the messages, and the script will be deployed on AWS lambda.&lt;/p&gt;</summary><content type="html">&lt;p&gt;&lt;img src="/images/thumbnails/1000x400/valentine.jfif" alt="Love in the Air"&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;It's another Valentine's Day!!!. Lying down, thinking about doing something special for my loved one, being about 7000km away from her. After so much deliberation, sending a WhatsApp message to remind her how much I love her in a different language every hour, sounded like a fun and thoughtful idea.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;In this tutorial, we will be writing a script to sends a Whatsapp message every hour to a number and deploying our script on AWS lambda. This will be written in python as that is my preferred language, if you have an interest in getting a nodejs version, you can put that in the comments.&lt;/p&gt;
+&lt;h3&gt;Gettings Started!!&lt;/h3&gt;
+&lt;p&gt;The article is broken into 3 sections: &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Automating Whatsapp Message sending using Python:&lt;/strong&gt; 
+One option is to use Python's Selenium package to open the WhatsApp web interface on a browser and control using the selenium web driver. This introduces new challenges, as WhatsApp requires QR code scanning to use the web interface,  making automation impossible. The other option is using the Twilio WhatsApp API, which allows developers to build prototypes in a sandbox environment. The Sandbox uses by default, a shared number to send messages to recipients. Using a personal number requires an application to Whatsapp, which might take time to be approved. 
+The script will be created using the Twilio API because it is best suited for our small scale project as it is easy to set up and can be automated&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Creating Messages to send.&lt;/strong&gt; 
+The aim is to compose our poem using Love messages and also write &lt;code&gt;i love you&lt;/code&gt; in different languages. A sequence of steps will be taken to accomplish this.&lt;br&gt;
+1) Scraping Messages off the internet- Composing a lot of messages for the project would take a lot of time, so why not make use of the available resources all over the internet?. This is done by scraping a website using the python beautiful soup library&lt;br&gt;
+2) Translating Messages to Random Languages - The Google Translate API will be used to get a random Language and translating our texts.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Deploying our app.&lt;/strong&gt;
+We will be deploying our script to AWS lambda, which is a cloud computing service that runs small pieces of code functions without the need for a server. This will help reduce costs as it removes the need for provisioning and maintaining a server&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Running the script periodically.&lt;/strong&gt;
+This will be done using the Cron Utility on our development server, while AWS Lambda Triggers will be used after deployment.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p align="center"&gt;
+&lt;img src="/images/twiliologo.png" alt="Twilio WhatsApp API"&gt;  
+&lt;/p&gt;
+
+&lt;h1&gt;&lt;/h1&gt;
+&lt;h3&gt;Sending Messages using the Twilio API&lt;/h3&gt;
+&lt;p&gt;The Twilio Whatsapp API is easy and quick to set up, using a shared phone number without waiting for a dedicated number to be approved by Whatsapp.  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;To get started with the Twilio API, visit the &lt;a href="Twilio Website"&gt;twilio website&lt;/a&gt;  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;Create a Free Twilio account and confirm your email and phone number  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;The only con to using this method is that the sandbox is pre-provision with a Whatsapp Number that is shared across all sandbox users. &lt;br&gt;
+&lt;strong&gt;N.B.&lt;/strong&gt;  Recipients have to go through a one-time permission process to receive messages. This works just fine for our small scale project. To activate the Twilio Sandbox. Navigate to Whatsapp Beta on the left side menu  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step5.PNG" alt="Twilio WhatsApp Sandbox" class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 1. Twilio Whatsapp Sandbox.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;
+
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;A Phone Number and an authentication Message are provided, Save the number on your device and send the provided message from your device. This is a one time process for every Recipient using your script. &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/whatsappconfirmation.jpeg" alt="Confirmation Message" class="enableModal" align="center"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 2. Success Reply.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;if successful, a reply is returned, The web interface also shows message received.  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Creating the project&lt;/strong&gt;  &lt;/p&gt;
+&lt;p&gt;To view how the API works, visit the &lt;a href="https://www.twilio.com/docs/sms/whatsapp/api" target="_blank"&gt;API documentation to find the basic usage&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After logging into the Twilio Console, take note of your Account SID and Auth Token. The Account SID is a unique identifier for your account, while the Auth Token is a secret key that should never be shared or else anyone will have full access to your Twilio account.&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step7.PNG" alt="Twilio Project Dashboard" class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 3. Twilio DashBoard.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;Copy both keys, as they will later be used for authenticating with the API in your script&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Create and activate a virtual environment for project isolation&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python3 -m venv virtualenv
+$ &lt;span class="nb"&gt;cd&lt;/span&gt; virtualenv &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; . bin/activate
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Create a project folder and GitHub repository.&lt;/strong&gt;   &lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ mkdir twiliowhatsapp &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="nb"&gt;cd&lt;/span&gt; twiliowhatsapp
+$ git init
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;OR&lt;/p&gt;
+&lt;h2&gt;&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Automating the setup process using the &lt;a href="https://www.seyiobaweya.tech/articles/2020-01-17/new-project-script/" target="_blank"&gt;newproject script&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ newproject twiliowhatsapp
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Install the Twilio python library&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip install Twilio
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Creating your project script&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ touch whatsappcode.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Copy and paste the code from the whatsapp API documentation&lt;/strong&gt;&lt;br&gt;
+(Also replace the &lt;strong&gt;sid&lt;/strong&gt; and &lt;strong&gt;auth_token&lt;/strong&gt;, and &lt;strong&gt;recipient phone number&lt;/strong&gt; with yours)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from twilio.rest import Client
+&lt;span class="nv"&gt;account_sid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;AC4bdca1b7084d0c29e62c381f60b8a041&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;auth_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;your_auth_token&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Client&lt;span class="o"&gt;(&lt;/span&gt;account_sid, auth_token&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; client.messages.create&lt;span class="o"&gt;(&lt;/span&gt;
+                            &lt;span class="nv"&gt;from_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:+14155238886&amp;#39;&lt;/span&gt;,
+                            &lt;span class="nv"&gt;body&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Hello, there!&amp;#39;&lt;/span&gt;,
+                            &lt;span class="nv"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:&amp;lt;recipient-number&amp;gt;&amp;#39;&lt;/span&gt;
+                        &lt;span class="o"&gt;)&lt;/span&gt;
+
+print&lt;span class="o"&gt;(&lt;/span&gt;message.sid&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;You can test your script to get a message sent to the recipient number&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ python whatsappcode.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Voila!!!, a message is received on the recipient phone&lt;/p&gt;
+&lt;h3&gt;Securing our API keys on the development environment&lt;/h3&gt;
+&lt;p&gt;Hard coding the API keys to our script is bad practice because it exposes sensitive information to the public when committing your code to a public repository. A way to avoid this is to externalize the keys and read from the os environment at runtime.&lt;br&gt;
+The Python dotenv package can be used to externalize our keys by searching for a .env file that will contain our keys, and exports the variables into our script. The .env file should also be added to a .gitignore file so it is ignored when uploading your code to the public repository.  &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Install the &lt;code&gt;python-dotenv&lt;/code&gt; package&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip install python-dotenv
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In the project folder, &lt;strong&gt;create a .env file and add your sid and token&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ vi .env
+&lt;span class="nv"&gt;TWILIOSID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;lt;your-sid&amp;gt;
+&lt;span class="nv"&gt;TWILIO_AUTH_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;lt;your-token&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;strong&gt;Add .env filename to the gitignore file&lt;/strong&gt; so that it ignored by git when you make your commit&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ &lt;span class="nb"&gt;echo&lt;/span&gt; .env &amp;gt;&amp;gt; .gitignore
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The next process is importing the variables into our code so we can remove the insecure keys. Add the following code to your script&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import os
+from dotenv import load_dotenv
+
+load_dotenv&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;override&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;True&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# load_dotenv(override=True). Overwrites already set system environments.&lt;/span&gt;
+
+from twilio.rest import Client
+&lt;span class="nv"&gt;account_sid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.environ.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;TWILIOSID&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;auth_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.environ.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;TWILIO_AUTH_TOKEN&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Client&lt;span class="o"&gt;(&lt;/span&gt;account_sid, auth_token&lt;span class="o"&gt;)&lt;/span&gt;
+
+...
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;At this point, the key/value pairs in the .env file are now present as system environment variables and they can be conveniently accessed via os.environ.get() method.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Run the script&lt;/strong&gt; again and you should get the message on WhatsApp if there are no errors.&lt;/p&gt;
+&lt;p&gt;Next verify your .env file is in the gitignore file, then commit your code to your repository&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ git commit -m &lt;span class="s2"&gt;&amp;quot;Message Client Working&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;STEP 2 Composing your messages&lt;/h3&gt;
+&lt;p&gt;The next item on our list is creating the Poem we would be sending. This is divided into 3 parts&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;Scraping Messages off the web&lt;/li&gt;
+&lt;li&gt;Getting a Random Language&lt;/li&gt;
+&lt;li&gt;Translating your Text to the random Language&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4&gt;1 Scraping the webpage&lt;/h4&gt;
+&lt;p&gt;Even though most people think I am a romantic, composing a long poem to send all through the day will be a tedious process. This led to the option of scraping messages off the tons of romantic messages online to create our poem. For the script, we would be scraping off &lt;a href="https://www.serenataflowers.com/pollennation/love-messages/" target="_blank"&gt;serenea flowers&lt;/a&gt; for their simple and thoughtful messages.&lt;/p&gt;
+&lt;p&gt;We will be using the BeautifulSoup python package to scrape the messages.  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;&lt;strong&gt;Install the beautifulsoup and requests library&lt;/strong&gt; for making HTTP requests and scraping the page&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ pip install bs4 requests
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;In your project folder, &lt;strong&gt;create a new script for scraping the site and import the request and beautifulsoup library&lt;/strong&gt; into your file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ touch scraper.py &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; vi scraper.py
+
+from bs4 import BeautifulSoup as bs
+import requests
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Next, make an HTTP request to the page we want to scrape and check for errors&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...
+&lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://www.serenataflowers.com/pollennation/love-messages/&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url&lt;span class="o"&gt;)&lt;/span&gt;
+try:
+    res.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+except requests.exceptions.HTTPError:
+    sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;If our request is successful, the HTML document is then passed to beautifulsoup to create a beautiful soup object which we can run the select and find methods on&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;bs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;res&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We then select all the messages in the soup object. To do this, we need to first get the HTML element path of the messages. This can be done using the &lt;code&gt;inspect element&lt;/code&gt; option in your web browser.  &lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p align="center"&gt;
+&lt;figure&gt;
+  &lt;img src="/images/step19.PNG" alt="Chrome Developer Tools" class="enableModal"&gt;
+  &lt;figcaption style="text-align: center;"&gt;Figure 4. Chrome Developer Tools.&lt;/figcaption&gt;
+&lt;/figure&gt; 
+&lt;/p&gt;
+
+&lt;h1&gt;&lt;/h1&gt;
+&lt;p&gt;On viewing the developer console, the messages are nested inside a &lt;code&gt;&amp;lt;li&amp;gt;&lt;/code&gt; tag within an &lt;code&gt;&amp;lt;ol&amp;gt;&lt;/code&gt; tag with the class of &lt;code&gt;simple-list&lt;/code&gt;. The HTML code for the message is represented in the following structure&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;ol&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;simple-list&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Message we are trying to access 1&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Message we are trying to access 2&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Message we are trying to access 3&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
+    ...
+&lt;span class="nt"&gt;&amp;lt;/ol&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To select all &lt;code&gt;&amp;lt;li&amp;gt;&lt;/code&gt; tags within the &lt;strong&gt;simple-list&lt;/strong&gt; class, we used the beautifulsoup &lt;code&gt;select()&lt;/code&gt; method and save the list to a variable &lt;code&gt;listOfMessages&lt;/code&gt;.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;listOfMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; soup.select&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.simple-list li&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# the space is used to specify element exists inside the class&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;This returns a list of all &lt;code&gt;&amp;lt;li&amp;gt;&lt;/code&gt; tags as beautifulsoup objects within the element.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;listOfMessages&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Message&lt;/span&gt; &lt;span class="n"&gt;we&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;trying&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;access&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Message&lt;/span&gt; &lt;span class="n"&gt;we&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;trying&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;access&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="n"&gt;Message&lt;/span&gt; &lt;span class="n"&gt;we&lt;/span&gt; &lt;span class="n"&gt;are&lt;/span&gt; &lt;span class="n"&gt;trying&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;access&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="o"&gt;&amp;lt;/&lt;/span&gt;&lt;span class="n"&gt;li&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;To get the text in each element, the &lt;code&gt;text()&lt;/code&gt; method is used to extract texts from the object&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;textMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;text&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;listOfMessages&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Now there is a list of messages to choose from. We only need a message from the list each time the script is run. this is where the python &lt;code&gt;random&lt;/code&gt; module comes to our rescue. &lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Import the random library&lt;/strong&gt; at the beginning of the script, then use &lt;code&gt;random.choice()&lt;/code&gt; method to get a random message from the list at each run.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import random
+
+&lt;span class="nv"&gt;textMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;item.text &lt;span class="k"&gt;for&lt;/span&gt; item in listOfMessages&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="nv"&gt;randomQuote&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;textMessages&lt;span class="o"&gt;)&lt;/span&gt;
+
+print&lt;span class="o"&gt;(&lt;/span&gt;randomQuote&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Our code can be converted into a function that can be imported into our main &lt;code&gt;whatsappcode.py&lt;/code&gt; script. The final code should look like this&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;from bs4 import BeautifulSoup as bs
+import requests, random
+
+def getMessage&lt;span class="o"&gt;()&lt;/span&gt;:
+    &lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://www.serenataflowers.com/pollennation/love-messages/&amp;#39;&lt;/span&gt;
+    &lt;span class="nv"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        res.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; bs&lt;span class="o"&gt;(&lt;/span&gt;res.text, &lt;span class="nv"&gt;features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;listOfMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; soup.select&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.simple-list li&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;textMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;item.text &lt;span class="k"&gt;for&lt;/span&gt; item in listOfMessages&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;textMessages&lt;span class="o"&gt;)&lt;/span&gt;
+
+print&lt;span class="o"&gt;(&lt;/span&gt;getMessage&lt;span class="o"&gt;())&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Every time the script is run, a verse of our poem is generated. &lt;/p&gt;
+&lt;h4&gt;2 Getting a Random Language&lt;/h4&gt;
+&lt;p&gt;Repetition is a poetic technique used to draw a person's attention to a certain idea. we are aiming to emphasize the point that we love the message recipient by repeating the words &lt;code&gt;"i Love You"&lt;/code&gt; in every verse of the poem. To spice things up, the words will be translated to a random language in every verse. (i consider every other language to be much more romantic than English).&lt;br&gt;
+The Google Translate API will be used in this step as I find it easy to use and free for our small scale project&lt;/p&gt;
+&lt;p&gt;To use the Google API, you'll have to sign up with Google Cloud and get a developer API key. &lt;a href="https://cloud.google.com/docs/authentication/api-keys" target="_blank"&gt;visit here for details&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Add the key into the .env file&lt;/strong&gt; in your project folder to ensure the API key is not exposed in the script&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;vi .env
+&lt;span class="nv"&gt;GOOGLEAPIKEY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&amp;lt;your-api-key&amp;gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The list of languages supported by Google Cloud can be accessed via the API &lt;code&gt;https://translation.googleapis.com/language/translate/v2/languages?key=&amp;lt;your-key&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;The request library will be used to access the API. This will return a JSON object, which will be parsed into a python dictionary using the JSON library.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import your api key
+&lt;span class="nv"&gt;gApiKey&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.getenv&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;GOOGLEAPIKEY&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;langApiUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;https://translation.googleapis.com/language/translate/v2/languages&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The key is then passed as a parameter to the request&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;langpayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gApiKey&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;langApiUrl, &lt;span class="nv"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;langpayload&lt;span class="o"&gt;)&lt;/span&gt;
+try:
+    r.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+except requests.exceptions.HTTPError:
+    print&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Error: the Request failed.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;if the request is successful, a JSON object is returned which is then parsed using the &lt;code&gt;json.loads()&lt;/code&gt; method&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; json.loads&lt;span class="o"&gt;(&lt;/span&gt;r.content.decode&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf-8-sig&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;we can then access the data from the converted python dictionary&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;dest_language&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;destResponse&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;languages&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;])&lt;/span&gt;
+
+print&lt;span class="o"&gt;(&lt;/span&gt;dest_language&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Every time the script is run, a different language should be displayed.&lt;/p&gt;
+&lt;h4&gt;3 Translating the text.&lt;/h4&gt;
+&lt;p&gt;This is the same process as above, the only difference will be the URL and the parameters passed to requests library&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;transUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2&amp;#39;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The translate API takes the following parameters&lt;/p&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;source language - English&lt;/li&gt;
+&lt;li&gt;target - This will be the result of the random language generated above&lt;/li&gt;
+&lt;li&gt;key - Your Google API key&lt;/li&gt;
+&lt;li&gt;q - this will be the text we are translating&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1&gt;&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;transPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;source&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;,
+        &lt;span class="s1"&gt;&amp;#39;target&amp;#39;&lt;/span&gt;: dest_language,
+        &lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey,
+        &lt;span class="s1"&gt;&amp;#39;q&amp;#39;&lt;/span&gt;: urllib.parse.quote&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;N.B. To pass the text into to the payload, the text has to be encoded as spaces have no corresponding character within the standard ASCII character set  &lt;code&gt;'q': urllib.parse.quote('I Love You')&lt;/code&gt; &lt;/p&gt;
+&lt;p&gt;The result of the earlier code block, generating the random language is passed as into the payload as the destination language for the API&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;transUrl, &lt;span class="nv"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;transPayload&lt;span class="o"&gt;)&lt;/span&gt;
+try:
+    r.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+except requests.exceptions.HTTPError:
+    print&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Error: the Request failed.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;transresponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; json.loads&lt;span class="o"&gt;(&lt;/span&gt;r.content.decode&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf-8-sig&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;to get the translated text from the generated python dictionary&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; transResponse.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translations&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translatedText&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;On realizing there is a lot of repetition between the translated code and random language code block, a &lt;code&gt;_get_request&lt;/code&gt; function, which takes in a URL and some parameters, will be created to handle the requests for both processes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;def _get_request&lt;span class="o"&gt;(&lt;/span&gt;url, payload&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="nv"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url, &lt;span class="nv"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;payload&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        r.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        print&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Error: the Request failed.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; json.loads&lt;span class="o"&gt;(&lt;/span&gt;r.content.decode&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf-8-sig&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; response
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;the &lt;code&gt;_get_request&lt;/code&gt; function can then be used by adding the following to the script&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;...
+
+&lt;span class="nv"&gt;randomLangPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;destResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;randomLangUrl, randomLangPayload&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;dest_language&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;destResponse&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;languages&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;])&lt;/span&gt;
+
+&lt;span class="nv"&gt;transPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="s1"&gt;&amp;#39;source&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;,
+    &lt;span class="s1"&gt;&amp;#39;target&amp;#39;&lt;/span&gt;: dest_language,
+    &lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey,
+    &lt;span class="s1"&gt;&amp;#39;q&amp;#39;&lt;/span&gt;: urllib.parse.quote&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;transResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;transUrl, transPayload&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; transResponse.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translations&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translatedText&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Combining All&lt;/h3&gt;
+&lt;p&gt;All the functions that have been created can be imported into the Twilio client script either by copying all the code into one file or importing the functions from files. we will be going with the first option to mirror our lambda deployment script which will be created in the next article.&lt;/p&gt;
+&lt;p&gt;Our scraped message and the translation of "I love you" is passed in as the message to the Twilio Client.&lt;/p&gt;
+&lt;p&gt;The whatsappcode.py script&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;import json, sys, requests, random, os
+import urllib.parse
+from dotenv import load_dotenv
+from twilio.rest import Client
+from bs4 import BeautifulSoup as bs
+
+load_dotenv&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;override&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;True&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# reading the environment variables&lt;/span&gt;
+&lt;span class="nv"&gt;account_sid&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.environ.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;TWILIOSID&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;auth_token&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.environ.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;TWILIO_AUTH_TOKEN&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;gtranslateApiKey&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; os.environ.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;GOOGLEAPIKEY&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+def getMessage&lt;span class="o"&gt;()&lt;/span&gt;:
+    &lt;span class="nv"&gt;url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://www.serenataflowers.com/pollennation/love-messages/&amp;#39;&lt;/span&gt;
+    &lt;span class="nv"&gt;res&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        res.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;soup&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; bs&lt;span class="o"&gt;(&lt;/span&gt;res.text, &lt;span class="nv"&gt;features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;html.parser&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;listOfMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; soup.select&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.simple-list li&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;textMessages&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;item.text &lt;span class="k"&gt;for&lt;/span&gt; item in listOfMessages&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;textMessages&lt;span class="o"&gt;)&lt;/span&gt;
+
+def _get_request&lt;span class="o"&gt;(&lt;/span&gt;url, payload&lt;span class="o"&gt;)&lt;/span&gt;:
+    &lt;span class="nv"&gt;r&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; requests.get&lt;span class="o"&gt;(&lt;/span&gt;url, &lt;span class="nv"&gt;params&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;payload&lt;span class="o"&gt;)&lt;/span&gt;
+    try:
+        r.raise_for_status&lt;span class="o"&gt;()&lt;/span&gt;
+    except requests.exceptions.HTTPError:
+        print&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Error: the Request failed.&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+        sys.exit&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="nv"&gt;response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; json.loads&lt;span class="o"&gt;(&lt;/span&gt;r.content.decode&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;utf-8-sig&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;))&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; response
+
+&lt;span class="nv"&gt;transUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2&amp;#39;&lt;/span&gt;
+&lt;span class="nv"&gt;randomLangUrl&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;https://translation.googleapis.com/language/translate/v2/languages&amp;#39;&lt;/span&gt;
+
+&lt;span class="nv"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; Client&lt;span class="o"&gt;(&lt;/span&gt;twiliosid, twiliotoken&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;randomLangPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey&lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;destResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;randomLangUrl, randomLangPayload&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;dest_language&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; random.choice&lt;span class="o"&gt;(&lt;/span&gt;destResponse&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;languages&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;])&lt;/span&gt;
+
+&lt;span class="nv"&gt;transPayload&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;source&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;,
+        &lt;span class="s1"&gt;&amp;#39;target&amp;#39;&lt;/span&gt;: dest_language,
+        &lt;span class="s1"&gt;&amp;#39;key&amp;#39;&lt;/span&gt;: gtranslateApiKey,
+        &lt;span class="s1"&gt;&amp;#39;q&amp;#39;&lt;/span&gt;: urllib.parse.quote&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+    &lt;span class="o"&gt;}&lt;/span&gt;
+
+&lt;span class="nv"&gt;transResponse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; _get_request&lt;span class="o"&gt;(&lt;/span&gt;transUrl, transPayload&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; transResponse.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;data&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translations&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)[&lt;/span&gt;&lt;span class="m"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;.get&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;translatedText&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="nv"&gt;randomquote&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; getMessage&lt;span class="o"&gt;()&lt;/span&gt;
+&lt;span class="nv"&gt;msg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; translate&lt;span class="o"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I Love You&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;, dest_language, gtranslateApiKey&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;fulltextmsg&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; randomquote + &lt;span class="s2"&gt;&amp;quot; \n P.S. &amp;quot;&lt;/span&gt; + msg
+
+
+&lt;span class="nv"&gt;message&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; client.messages.create&lt;span class="o"&gt;(&lt;/span&gt;
+                            &lt;span class="nv"&gt;from_&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:+14155238886&amp;#39;&lt;/span&gt;,
+                            &lt;span class="nv"&gt;body&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;fulltextmsg,
+                            &lt;span class="nv"&gt;to&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;whatsapp:&amp;lt;your number&amp;gt;&amp;#39;&lt;/span&gt;
+                        &lt;span class="o"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+        &lt;span class="s1"&gt;&amp;#39;statusCode&amp;#39;&lt;/span&gt;: &lt;span class="m"&gt;200&lt;/span&gt;,
+        &lt;span class="s1"&gt;&amp;#39;body&amp;#39;&lt;/span&gt;: message.sid
+    &lt;span class="o"&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;h3&gt;Running the Script Periodically.&lt;/h3&gt;
+&lt;p&gt;This will not be a lengthy section as there are a lot of articles on cron usage. Here is a &lt;a href="https://opensource.com/article/17/11/how-use-cron-linux/" target="_blank"&gt;good article on using Cron.&lt;/a&gt;
+To run the script in cron, The python interpreter which the script will be using should be set by adding the path with a shebang at the top of the script.&lt;/p&gt;
+&lt;p&gt;To get your executable path, in your activate virtual environment&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ which python
+
+/home/seyi/projects/bin/python
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;or Find the Path, which will always be located in the bin/ directory in your virtual environment&lt;/p&gt;
+&lt;p&gt;Add the Following to the first line in your code &lt;code&gt;#!&amp;lt;your-env-path&amp;gt;&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="ch"&gt;#!/home/seyi/projects/bin/python&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Please remember to change your path&lt;/p&gt;
+&lt;p&gt;After Adding the Interpreter to be used, convert your script to an executable. you will need sudo access to carry out this action&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ sudo chmod +x scriptname.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;Also, note the Full path to your script&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ realpath yourscriptname.py
+
+/home/seyi/projects/whatsapp_val/whatsappCron.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;We then add this to crontab, to be run every hour during the day&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;$ crontab -e
+
+&lt;span class="m"&gt;0&lt;/span&gt; */1 * * * /home/seyi/projects/whatsapp_val/whatsappCron.py
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;The script should be called at the start of the next hour and the verse of your poem will be sent to the recipient's number.&lt;/p&gt;
+&lt;p&gt;The next article will cover deploying your script to AWS lambda&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;N.B.&lt;/strong&gt; Remember to remove your script from cron at the end of the day by commenting or deleting the line off cron, so you do not end up annoying the person you are sending the message to.&lt;/p&gt;
+&lt;p&gt;The Source code for the article can be found &lt;a href="https://github.com/seyio91/twiliowhatsappscript" target="_blank"&gt;here&lt;/a&gt;&lt;/p&gt;</content><category term="Python_Automation"></category><category term="python"></category><category term="cron"></category><category term="webscraping"></category><category term="api"></category></entry></feed>
